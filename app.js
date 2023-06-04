@@ -1,7 +1,6 @@
 const app = {
 
     init: () => {
-        console.log("app.init");
         app.eventListeners();
     },
 
@@ -12,6 +11,8 @@ const app = {
             iterator.addEventListener('click', app.handleSelectedItem)
         }
 
+        const submitBtn = document.querySelector('#submit-btn');
+        submitBtn.addEventListener('click', app.handleFormSubmit);
     },
 
     handleSelectedItem: (event) => {
@@ -21,11 +22,32 @@ const app = {
         }
 
         const clickedOption = event.target;
-        console.log(clickedOption);
-
         clickedOption.classList.add('selected');
 
-    }
+    },
+
+    handleFormSubmit: () => {
+
+        const selectedOption = document.querySelector('.option.selected');
+        const errorMessage = document.querySelector('#error-message');
+
+        if (!selectedOption) {
+            errorMessage.style.display = 'block';
+            return;
+        }
+
+        const formDiv = document.querySelector('#form');
+        formDiv.classList.add('hidden');
+
+        const resultDiv = document.querySelector('#result');
+        resultDiv.classList.remove('hidden');
+
+        const selectedValue = selectedOption.dataset.value;
+        const resultParagraph = document.querySelector('#selected-result');
+        resultParagraph.textContent = `You selected ${selectedValue} out of 5`;
+    },
+
+
 }
 
 document.addEventListener('DOMContentLoaded', app.init);
